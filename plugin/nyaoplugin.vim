@@ -32,6 +32,9 @@ module NyaoPlugin
     endfu
 
     call s:setup()
+
+    if exists('g:nyao_always_add_mappings') && g:nyao_always_add_mappings
+    endif
     TEMPLATE
   end
 
