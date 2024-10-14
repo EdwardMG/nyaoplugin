@@ -7,9 +7,13 @@ module NyaoPlugin
 
   def self.new_plugin name
     path = "#{@@opt_path}/#{to_snake name}/plugin"
+    doc_path = "#{@@opt_path}/#{to_snake name}/doc"
     FileUtils.mkdir_p path
-    fp = "#{path}/#{to_snake name}.vim"
+    FileUtils.mkdir_p doc_path
+    fp     = "#{path}/#{to_snake name}.vim"
+    doc_fp = "#{doc_path}/#{to_snake name}.txt"
     File.write(fp, template(name))
+    File.write(doc_fp, doc_template(name))
     Ex.edit fp
     Ex.cd "#{@@opt_path}/#{to_snake name}"
     `git init && git add .`
@@ -28,6 +32,26 @@ module NyaoPlugin
     TEMPLATE
   end
 
+  def self.doc_template name
+    <<~TEMPLATE
+    *nyaocolors*
+
+    INTRODUCTION
+
+    Requires rubywrapper plugin.
+
+    USAGE
+
+    <Commands>
+
+    <Functions>
+
+    vim:autoindent noexpandtab tabstop=8 shiftwidth=8
+    vim:se modifiable
+    vim:tw=78:et:ft=help:norl:
+    TEMPLATE
+  end
+
   def self.to_pascal str
     str.split(/[-_ ]/).map(&:capitalize).join('')
   end
@@ -38,5 +62,7 @@ module NyaoPlugin
 end
 RUBY
 endfu
+
+nno \N :ruby NyaoPlugin.new_plugin(Ev.input("plugin name: "))<CR>
 
 call s:setup()
