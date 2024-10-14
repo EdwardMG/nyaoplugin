@@ -25,6 +25,9 @@ module NyaoPlugin
     ruby << RUBY
     module #{to_pascal name}
     end
+
+    doc_path = Ev.expand('<sfile>:h:h') + 'doc/'
+    Ex['silent! exe "helptags '+doc_path+'"']
     RUBY
     endfu
 
@@ -34,7 +37,7 @@ module NyaoPlugin
 
   def self.doc_template name
     <<~TEMPLATE
-    *nyaocolors*
+    *#{to_snake name}*
 
     INTRODUCTION
 
